@@ -1,0 +1,8 @@
+.voting__container {
+    display: flex;
+    margin-left: 2rem;
+}
+
+.voting__vote-count {
+    text-align: center;
+}

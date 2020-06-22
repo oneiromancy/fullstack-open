@@ -1,0 +1,12 @@
+.most-popular {
+    margin: 5rem 0;
+}
+
+.most-popular__header {
+    font-size: 1.25rem;
+    margin-bottom: 3rem;
+}
+
+.most-popular__anecdote {
+    margin: 1rem 0;
+}

@@ -1,0 +1,8 @@
+.daily-anecdote__header {
+    display: flex;
+}
+
+.daily-anecdote__refresh-button {
+    align-self: center;
+    margin-right: 0.25rem;
+}
