@@ -1,0 +1,12 @@
+.notification {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+}
+
+.notification__successful {
+    background-color: rgb(134, 255, 134);
+}
+
+.notification__unsuccessful {
+    background-color: rgb(255, 134, 134);
+}
