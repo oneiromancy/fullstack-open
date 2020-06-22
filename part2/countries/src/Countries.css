@@ -1,0 +1,15 @@
+.countries__container {
+    margin-top: 1rem;
+}
+
+.countries__country {
+    margin-top: 0.5rem;
+}
+
+.countries__show-country-button {
+    margin-left: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: white;
+    border: 1px black solid;
+    cursor: pointer;
+}

@@ -1,0 +1,13 @@
+.country__container {
+    margin-top: 1rem;
+}
+
+.country__heading {
+    display: flex;
+    align-items: center;
+}
+
+.country__flag {
+    margin-right: 0.5rem;
+    width: 3rem;
+}
