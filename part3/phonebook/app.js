@@ -2,15 +2,6 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
-const {
-    readDB,
-    rewriteDB,
-    getRandomInt,
-    validatePerson,
-} = require("./utils/index");
-
-// provisional "database"
-const db = readDB();
 
 // parses incoming requests that have JSON payloads
 app.use(express.json());
