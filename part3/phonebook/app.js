@@ -104,7 +104,7 @@ app.post("/api/persons", (req, res) => {
             if (person) {
                 person.number = number;
                 person.save().then((person) => {
-                    return res.json(person);
+                    return res.json({ person });
                 });
             } else {
                 const newPerson = new Person({ name, number });
