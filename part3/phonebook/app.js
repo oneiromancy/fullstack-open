@@ -92,31 +92,34 @@ app.delete("/api/persons/:id", (req, res) => {
         .catch((error) => next(error));
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
     const { name, number } = req.body;
-
-    if (!name || !number)
-        return res.status(400).json({ error: "Name and/or number is missing" });
 
     Person.findOne({ name })
         .select("id name number")
         .then((person) => {
             if (person) {
                 person.number = number;
-                person.save().then((person) => {
-                    return res.json({ person });
-                });
+                person
+                    .save()
+                    .then((person) => {
+                        return res.json({ person });
+                    })
+                    .catch((error) => next(error));
             } else {
                 const newPerson = new Person({ name, number });
-                newPerson.save().then((person) => {
-                    return res.json({
-                        person: {
-                            id: person.id,
-                            name: person.name,
-                            number: person.number,
-                        },
-                    });
-                });
+                newPerson
+                    .save()
+                    .then((person) => {
+                        return res.json({
+                            person: {
+                                id: person.id,
+                                name: person.name,
+                                number: person.number,
+                            },
+                        });
+                    })
+                    .catch((error) => next(error));
             }
         })
         .catch((error) => next(error));
@@ -129,14 +132,17 @@ const unknownEndpoint = (req, res) => {
 // handler of requests with unknown endpoint
 app.use(unknownEndpoint);
 
-const errorHandler = (err, req, res, next) => {
-    console.error(err.message);
+const errorHandler = (error, req, res, next) => {
+    // console.error(error.name);
 
-    if (err.name === "CastError" && err.kind == "ObjectId") {
+    if (error.name === "CastError" && error.kind == "ObjectId") {
         return res.status(400).send({ error: "malformatted id" });
+    } else if (error.name === "ValidationError") {
+        console.log("validation");
+        return res.status(400).json({ error: error.message });
     }
 
-    next(err);
+    next(error);
 };
 
 // handler of requests with result to errors
