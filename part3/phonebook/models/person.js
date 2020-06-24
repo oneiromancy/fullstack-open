@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const config = require('../utils/config')
+const logger = require('../utils/logger')
 
 // mongoose DB connection
-const url = process.env.MONGODB_URI
+const url = config.MONGODB_URI
 mongoose
     .connect(url, {
         useNewUrlParser: true,
@@ -10,10 +12,10 @@ mongoose
         useUnifiedTopology: true,
     })
     .then(() => {
-        console.log('connected to MongoDB')
+        logger.info('connected to MongoDB')
     })
     .catch((error) => {
-        console.log('error connecting to MongoDB:', error.message)
+        logger.error('error connecting to MongoDB:', error.message)
     })
 
 mongoose.set('useFindAndModify', false)
