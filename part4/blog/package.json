@@ -4,9 +4,9 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node server.js",
-        "server": "nodemon server.js"
+        "server": "nodemon server.js",
+        "test": "jest --verbose"
     },
     "author": "",
     "license": "MIT",
@@ -23,6 +23,10 @@
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.21.2",
         "eslint-plugin-prettier": "^3.1.4",
+        "jest": "^26.1.0",
         "prettier": "^2.0.5"
+    },
+    "jest": {
+        "testEnvironment": "node"
     }
 }
