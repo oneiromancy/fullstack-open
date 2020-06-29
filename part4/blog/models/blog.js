@@ -5,20 +5,20 @@ const logger = require('../utils/logger');
 // mongoose DB connection
 const url = config.MONGODB_URI;
 
-mongoose
-    .connect(url, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        logger.info('connected to MongoDB');
-    })
-    .catch((error) => {
-        logger.error('error connecting to MongoDB:', error.message);
-    });
+(async () => {
+    try {
+        await mongoose.connect(url, {
+            useNewUrlParser: true,
+            useCreateIndex: true,
+            useUnifiedTopology: true,
+        });
 
-mongoose.set('useFindAndModify', false);
+        logger.info('connected to MongoDB');
+        mongoose.set('useFindAndModify', false);
+    } catch (error) {
+        logger.error('error connecting to MongoDB:', error.message);
+    }
+})();
 
 const blogSchema = mongoose.Schema({
     title: String,
