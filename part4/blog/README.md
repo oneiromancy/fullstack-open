@@ -175,3 +175,65 @@ Define a function called mostLikes that receives an array of blogs as its parame
 ```
 
 If there are many top bloggers, then it is enough to show any one of them.
+
+### 4.8: Blog list tests, step1
+
+Use the supertest package for writing a test that makes an HTTP GET request to the /api/blogs url. Verify that the blog list application returns the correct amount of blog posts in the JSON format.
+
+Once the test is finished, refactor the route handler to use the async/await syntax instead of promises.
+
+Notice that you will have to make similar changes to the code that were made in the material, like defining the test environment so that you can write tests that use their own separate database.
+
+NB: When running the tests, you may run into warnings.
+
+If this happens, follow the instructions and create a new jest.config.js file at the root of the project with the following contents:
+
+```
+module.exports = {
+    testEnvironment: 'node'
+}
+```
+
+NB: when you are writing your tests it is better to not execute all of your tests, only execute the ones you are working on. Read more about this here.
+
+### 4.9\*: Blog list tests, step2
+
+Write a test that verifies that the unique identifier property of the blog posts is named id, by default the database names the property \_id. Verifying the existence of a property is easily done with Jest's toBeDefined matcher.
+
+Make the required changes to the code so that it passes the test. The toJSON method discussed in part 3 is an appropriate place for defining the id parameter.
+
+### 4.10: Blog list tests, step3
+
+Write a test that verifies that making an HTTP POST request to the /api/blogs url successfully creates a new blog post. At the very least, verify that the total number of blogs in the system is increased by one. You can also verify that the content of the blog post is saved correctly to the database.
+
+Once the test is finished, refactor the operation to use async/await instead of promises.
+
+### 4.11\*: Blog list tests, step4
+
+Write a test that verifies that if the likes property is missing from the request, it will default to the value 0. Do not test the other properties of the created blogs yet.
+
+Make the required changes to the code so that it passes the test.
+
+### 4.12\*: Blog list tests, step5
+
+Write a test related to creating new blogs via the /api/blogs endpoint, that verifies that if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request.
+
+Make the required changes to the code so that it passes the test.
+
+### 4.13 Blog list expansions, step1
+
+Implement functionality for deleting a single blog post resource.
+
+Use the async/await syntax. Follow RESTful conventions when defining the HTTP API.
+
+Feel free to implement tests for the functionality if you want to. Otherwise verify that the functionality works with Postman or some other tool.
+
+### 4.14 Blog list expansions, step2
+
+Implement functionality for updating the information of an individual blog post.
+
+Use async/await.
+
+The application mostly needs to update the amount of likes for a blog post. You can implement this functionality the same way that we implemented updating notes in part 3.
+
+Feel free to implement tests for the functionality if you want to. Otherwise verify that the functionality works with Postman or some other tool.

@@ -1,11 +1,9 @@
 const listHelper = require('../utils/list_helper');
-const blogs = require('./mockData');
+const { initialBlogs } = require('./test_helper');
 
 describe('testing jest functionality with a dummy function', () => {
     test('dummy returns one', () => {
-        const blogs = [];
-
-        const result = listHelper.dummy(blogs);
+        const result = listHelper.dummy(initialBlogs);
         expect(result).toBe(1);
     });
 });
@@ -36,7 +34,7 @@ describe('total likes', () => {
     });
 
     test('of a bigger list is calculated right', () => {
-        const result = listHelper.totalLikes(blogs);
+        const result = listHelper.totalLikes(initialBlogs);
         expect(result).toBe(36);
     });
 });
@@ -49,7 +47,7 @@ describe('favourite blog', () => {
             likes: 12,
         };
 
-        const result = listHelper.favouriteBlog(blogs);
+        const result = listHelper.favouriteBlog(initialBlogs);
         expect(result).toEqual(favouriteBlog);
     });
 });
@@ -58,7 +56,7 @@ describe('most prolific author', () => {
     test(`Robert C. Martin is the most prolific author`, () => {
         const mostProlificAuthor = { author: 'Robert C. Martin', blogs: 3 };
 
-        const result = listHelper.mostBlogs(blogs);
+        const result = listHelper.mostBlogs(initialBlogs);
         expect(result).toEqual(mostProlificAuthor);
     });
 });
@@ -67,7 +65,7 @@ describe('most liked author', () => {
     test(`Edsger W. Dijkstra is the most liked author`, () => {
         const mostLikedAuthor = { author: 'Edsger W. Dijkstra', likes: 17 };
 
-        const result = listHelper.mostLikes(blogs);
+        const result = listHelper.mostLikes(initialBlogs);
         expect(result).toEqual(mostLikedAuthor);
     });
 });

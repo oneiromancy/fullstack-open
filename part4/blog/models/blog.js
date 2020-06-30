@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const config = require('../utils/config');
 const logger = require('../utils/logger');
 
@@ -21,12 +22,21 @@ const url = config.MONGODB_URI;
 })();
 
 const blogSchema = mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number,
+    title: { type: String, required: true, unique: true },
+    author: { type: String },
+    url: { type: String, required: true, unique: true },
+    likes: { type: Number, default: 0 },
 });
 
+blogSchema.plugin(uniqueValidator);
 const Blog = mongoose.model('Blog', blogSchema);
+
+blogSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+    },
+});
 
 module.exports = Blog;
