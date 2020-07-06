@@ -1,40 +1,34 @@
 import React, { useState } from 'react';
-import loginService from '../services/login';
-import blogService from '../services/blogs';
+import PropTypes from 'prop-types';
+import Button from './Button';
 
-const LoginForm = ({ handleNotificationMessage, setUser }) => {
-    const [loginDetails, setLoginDetails] = useState({
+const style = {
+    button: {
+        borderRadius: '0.25rem',
+        border: '1px solid black',
+    },
+};
+
+const LoginForm = ({ handleUserLogin }) => {
+    const [credentials, setCredentials] = useState({
         username: '',
         password: '',
     });
 
-    const loginUser = async (e) => {
-        e.preventDefault();
-
-        try {
-            const user = await loginService.loginUser(loginDetails);
-            blogService.setToken(user.token);
-            window.localStorage.setItem('user', JSON.stringify(user));
-
-            setUser(user);
-        } catch (error) {
-            handleNotificationMessage('Wrong credentials');
-
-            setTimeout(() => {
-                handleNotificationMessage('');
-            }, 3000);
-        }
-    };
-
     const trackInput = (e) => {
-        setLoginDetails({
-            ...loginDetails,
+        setCredentials({
+            ...credentials,
             [e.target.name]: e.target.value,
         });
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleUserLogin(credentials);
+    };
+
     return (
-        <form onSubmit={loginUser}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">username: </label>
                 <input name="username" onChange={trackInput} />
@@ -43,9 +37,14 @@ const LoginForm = ({ handleNotificationMessage, setUser }) => {
                 <label htmlFor="password">password: </label>
                 <input name="password" type="password" onChange={trackInput} />
             </div>
-            <button>login</button>
+
+            <Button label="login" customStyle={style.button} />
         </form>
     );
+};
+
+LoginForm.propTypes = {
+    handleUserLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

@@ -25,4 +25,29 @@ const createOne = async (newBlog) => {
     return res.data;
 };
 
-export default { getAll, createOne, setToken };
+const updateOne = async (blog) => {
+    const config = {
+        headers: { Authorization: token },
+    };
+    const res = await axios.put(
+        `http://localhost:3001/api/blogs/${blog.id}`,
+        blog,
+        config,
+    );
+
+    return res.data;
+};
+
+const deleteOne = async (blogId) => {
+    const config = {
+        headers: { Authorization: token },
+    };
+    const res = await axios.delete(
+        `http://localhost:3001/api/blogs/${blogId}`,
+        config,
+    );
+
+    return res.data;
+};
+
+export default { getAll, createOne, updateOne, deleteOne, setToken };

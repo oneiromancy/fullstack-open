@@ -1,72 +1,59 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import PropTypes from 'prop-types';
+import Button from './Button';
 
-const BlogForm = ({ blogs, setBlogs, handleNotificationMessage }) => {
+const BlogForm = ({ handleBlogCreation }) => {
     const [newBlog, setNewBlog] = useState({ title: '', url: '', author: '' });
-
-    const createBlog = async (e) => {
-        e.preventDefault();
-
-        try {
-            const blog = await blogService.createOne(newBlog);
-
-            setBlogs(blogs.concat(blog));
-
-            handleNotificationMessage(
-                `${newBlog.title} by ${newBlog.author} has been added to the list of blogs`,
-            );
-
-            setTimeout(() => {
-                handleNotificationMessage('');
-            }, 3000);
-            setNewBlog({ title: '', author: '', url: '' });
-        } catch (error) {
-            handleNotificationMessage(
-                'Blog could not be saved to the database',
-            );
-
-            setTimeout(() => {
-                handleNotificationMessage('');
-            }, 3000);
-        }
-    };
 
     const trackInput = (e) => {
         setNewBlog({ ...newBlog, [e.target.name]: e.target.value });
     };
 
+    const handleSumit = (e) => {
+        e.preventDefault();
+
+        handleBlogCreation(newBlog);
+        setNewBlog({ title: '', author: '', url: '' });
+    };
+
     return (
         <div>
             <h2>Create new</h2>
-            <form onSubmit={createBlog}>
+
+            <form onSubmit={handleSumit}>
                 <div>
-                    <label htmlFor="title">Title</label>
                     <input
                         name="title"
+                        placeholder="Title"
                         onChange={trackInput}
                         value={newBlog.title}
                     />
                 </div>
                 <div>
-                    <label htmlFor="author">Author</label>
                     <input
                         name="author"
+                        placeholder="Author"
                         onChange={trackInput}
                         value={newBlog.author}
                     />
                 </div>
                 <div>
-                    <label htmlFor="url">URL</label>
                     <input
                         name="url"
+                        placeholder="Url"
                         onChange={trackInput}
                         value={newBlog.url}
                     />
                 </div>
-                <button>create</button>
+
+                <Button label="create" />
             </form>
         </div>
     );
+};
+
+BlogForm.protoTypes = {
+    handleBlogCreation: PropTypes.func.isRequired,
 };
 
 export default BlogForm;
