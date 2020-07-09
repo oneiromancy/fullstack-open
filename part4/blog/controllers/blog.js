@@ -1,8 +1,13 @@
 const blogRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 blogRouter.get('/', async (req, res) => {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate('user', {
+        username: 1,
+        name: 1,
+    });
 
     return res.json(blogs.map((blog) => blog.toJSON()));
 });
@@ -12,8 +17,19 @@ blogRouter.post('/', async (req, res) => {
 
     if (!title || !url) return res.status(400).end();
 
-    const blog = new Blog({ title, author, url, likes });
-    await blog.save();
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+
+    if (!decodedToken || !decodedToken.id) {
+        return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+
+    const blog = new Blog({ title, author, url, likes, user: user._id });
+    const savedBlog = await blog.save();
+
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
 
     return res.status(201).json(blog.toJSON());
 });
@@ -21,7 +37,7 @@ blogRouter.post('/', async (req, res) => {
 blogRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(id).populate('user');
 
     if (!blog) return res.status(404).end();
 
@@ -30,9 +46,26 @@ blogRouter.get('/:id', async (req, res) => {
 
 blogRouter.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    const blog = await Blog.findByIdAndRemove(id);
 
-    return res.status(204).json(blog.toJSON());
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+
+    if (!decodedToken || !decodedToken.id) {
+        return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+        return res.status(404).json({ error: 'resource was not found' });
+    }
+
+    if (blog.user.toString() !== decodedToken.id.toString()) {
+        return res.status(400).json({ error: 'unauthorized action' });
+    }
+
+    const deletedBlog = await Blog.findByIdAndRemove(id);
+
+    return res.status(204).end();
 });
 
 blogRouter.put('/:id', async (req, res) => {

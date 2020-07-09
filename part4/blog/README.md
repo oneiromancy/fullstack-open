@@ -237,3 +237,100 @@ Use async/await.
 The application mostly needs to update the amount of likes for a blog post. You can implement this functionality the same way that we implemented updating notes in part 3.
 
 Feel free to implement tests for the functionality if you want to. Otherwise verify that the functionality works with Postman or some other tool.
+
+### 4.15: bloglist expansion, step3
+
+Implement a way to create new users by doing a HTTP POST-request to address api/users. Users have username , password and name.
+
+Do not save passwords to the database as clear text, but use the bcrypt library like we did in part 4 chapter Creating new users.
+
+NB Some Windows users have had problems with bcrypt. If you run into problems, remove the library with command
+
+```
+npm uninstall bcrypt --save
+```
+
+and install bcryptjs instead.
+
+Implement a way to see the details of all users by doing a suitable HTTP request.
+
+### 4.16\*: bloglist expansion, step4
+
+Add a feature which adds the following restrictions to creating new users: Both username and password must be given. Both username and password must be at least 3 characters long. The username must be unique.
+
+The operation must respond with a suitable status code and some kind of an error message if invalid user is created.
+
+NB Do not test password restrictions with Mongoose validations. It is not a good idea because the password received by the backend and the password hash saved to the database are not the same thing. The password length should be validated in the controller like we did in part 3 before using Mongoose validation.
+
+Also, implement tests which check that invalid users are not created and invalid add user operation returns a suitable status code and error message.
+
+4.17: bloglist expansion, step5
+Expand blogs so that each blog contains information on the creator of the blog.
+
+Modify adding new blogs so that when a new blog is created, any user from the database is designated as its creator (for example the one found first). Implement this according to part 4 chapter populate. Which user is designated as the creator does not matter just yet. The functionality is finished in exercise 4.19.
+
+Modify listing all blogs so that the creator's user information is displayed with the blog and listing all users also displays the blogs created by each user
+
+### 4.18: bloglist expansion, step6
+
+Implement token-based authentication according to part 4 chapter Token authentication.
+
+### 4.19: bloglist expansion, step7
+
+Modify adding new blogs so that it is only possible if a valid token is sent with the HTTP POST request. The user identified by the token is designated as the creator of the blog.
+
+### 4.20\*: bloglist expansion, step8
+
+This example from part 4 shows taking the token from the header with the getTokenFrom helper function.
+
+If you used the same solution, refactor taking the token to a middleware. The middleware should take the token from the Authorization header and place it to the token field of the request object.
+
+In other words, if you register this middleware in the app.js file before all routes
+
+```
+app.use(middleware.tokenExtractor)
+```
+
+routes can access the token with request.token:
+
+```
+blogsRouter.post('/', async (request, response) => {
+  // ..
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  // ..
+})
+```
+
+Remember that a normal middleware is a function with three parameters, that at the end calls the last parameter next in order to move the control to next middleware:
+
+```
+const tokenExtractor = (request, response, next) => {
+  // code that extracts the token
+
+  next()
+}
+```
+
+### 4.21\*: bloglist expansion, step9
+
+Change the delete blog operation so that a blog can be deleted only by the user who added the blog. Therefore, deleting a blog is possible only if the token sent with the request is the same as that of the blog's creator.
+
+If deleting a blog is attempted without a token or by a wrong user, the operation should return a suitable status code.
+
+Note that if you fetch a blog from the database,
+
+```
+const blog = await Blog.findById(...)
+```
+
+the field blog.user does not contain a string, but an Object. So if you want to compare the id of the object fetched from the database and a string id, normal comparison operation does not work. The id fetched from the database must be parsed into a string first.
+
+```
+if ( blog.user.toString() === userid.toString() ) ...
+```
+
+### 4.22\*: bloglist expansion, step10
+
+After adding token based authentication the tests for adding a new blog broke down. Fix now the tests. Write also a new test that ensures that adding a blog fails with proper status code 401 Unauthorized if token is not provided.
+
+This is most likely useful when doing the fix.
