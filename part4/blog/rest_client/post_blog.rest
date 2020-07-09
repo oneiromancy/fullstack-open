@@ -1,6 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYXNoaSIsImlkIjoiNWVmY2IwMTM2NjdmYWQxMWYwM2E2ZjdjIiwiaWF0IjoxNTkzNjQ3NDMzfQ.i5bgfcJnI7DotUAFxknuY6Z2-vYLGyNW8V2Xb3x6SKQ
 
 {
-    "author": 12
+    "title": "React Redux Tutorial for Beginners",
+    "author": "Robin Wieruch",
+    "url": "https://www.robinwieruch.de/react-redux-tutorial",
+    "likes": 4
 }
