@@ -43,3 +43,90 @@ const App = () => {
 
 export default App
 ```
+
+### 6.9 Better anecdotes, step7
+
+Start using React dev tools. Move defining the Redux-store into its own file store.js.
+
+### 6.10 Better anecdotes, step8
+
+The application has a ready-made body for the Notification component:
+
+```
+import React from 'react'
+
+const Notification = () => {
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1
+  }
+  return (
+    <div style={style}>
+      render here notification...
+    </div>
+  )
+}
+
+export default Notification
+```
+
+Extend the component so that it renders the message stored in the redux store, making the component to take the form:
+
+```
+import React from 'react'
+import { useSelector } from 'react-redux'
+
+const Notification = () => {
+  const notification = useSelector(/* something here */)
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1
+  }
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
+}
+```
+
+You will have to make changes to the application's existing reducer. Create a separate reducer for the new functionality and refactor the application so that it uses a combined reducer as shown in this part of the course material.
+
+The application does not have to use the Notification component in any intelligent way at this point in the exercises. It is enough for the application to display the initial value set for the message in the notificationReducer.
+
+### 6.11 Better anecdotes, step9
+
+Extend the application so that it uses the Notification component to display a message for the duration of five seconds when the user votes for an anecdote or creates a new anecdote:
+
+It's recommended to create separate action creators for setting and removing notifications.
+
+### 6.12\* Better anecdotes, step10
+
+Implement filtering for the anecdotes that are displayed to the user.
+
+Store the state of the filter in the redux store. It is recommended to create a new reducer and action creators for this purpose.
+
+Create a new Filter component for displaying the filter. You can use the following code as a template for the component:
+
+```
+import React from 'react'
+
+const Filter = () => {
+  const handleChange = (event) => {
+    // input-field value is in variable event.target.value
+  }
+  const style = {
+    marginBottom: 10
+  }
+
+  return (
+    <div style={style}>
+      filter <input onChange={handleChange} />
+    </div>
+  )
+}
+
+export default Filter
+```
