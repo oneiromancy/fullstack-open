@@ -1,19 +1,17 @@
-export const setNotification = (message) => {
-    const action = {
-        type: 'SET_NOTIFICATION',
-        data: message,
+export const setNotification = (message, timespan) => {
+    return async (dispatch) => {
+        await dispatch({
+            type: 'SET_NOTIFICATION',
+            data: message,
+        });
+
+        await setTimeout(() => {
+            dispatch({
+                type: 'CLEAR_NOTIFICATION',
+                data: null,
+            });
+        }, timespan);
     };
-
-    return action;
-};
-
-export const clearNotification = () => {
-    const action = {
-        type: 'CLEAR_NOTIFICATION',
-        data: null,
-    };
-
-    return action;
 };
 
 const notificationReducer = (state = null, action) => {

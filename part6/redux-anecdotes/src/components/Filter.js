@@ -1,5 +1,5 @@
 import React from 'react';
-import { setVisibilityFilter } from './reducers/filter';
+import { setVisibilityFilter } from '../reducers/filter';
 import { useDispatch } from 'react-redux';
 
 const Filter = () => {

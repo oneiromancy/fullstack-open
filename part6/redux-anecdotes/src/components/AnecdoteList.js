@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Anecdote from './Anecdote';
-import { upvoteAnecdoteById } from './reducers/anecdotes';
-import { setNotification, clearNotification } from './reducers/notification';
+import { upvoteAnecdote } from '../reducers/anecdote';
+import { setNotification } from '../reducers/notification';
 
 const AnecdoteList = () => {
     const sortByVotes = (anecdotes) => {
@@ -11,7 +11,7 @@ const AnecdoteList = () => {
 
     const filterByQuery = (anecdotes, query) => {
         return anecdotes.filter((anecdote) => {
-            return anecdote.content.includes(query);
+            return anecdote.content.toLowerCase().includes(query.toLowerCase());
         });
     };
 
@@ -25,19 +25,15 @@ const AnecdoteList = () => {
 
     const dispatch = useDispatch();
 
-    const upvoteAnecdote = (id) => {
-        dispatch(upvoteAnecdoteById(id));
+    const handleAnecdoteUpvote = (id) => {
+        const anecdoteToUpdate = anecdotes.find(
+            (anecdote) => anecdote.id === id,
+        );
 
-        const anecdote = anecdotes.find((anecdote) => anecdote.id === id);
-        initiateTimedNotification(`You upvoted ${anecdote.content}`);
-    };
-
-    const initiateTimedNotification = (message) => {
-        dispatch(setNotification(message));
-
-        setTimeout(() => {
-            dispatch(clearNotification());
-        }, 5000);
+        dispatch(upvoteAnecdote(anecdoteToUpdate));
+        dispatch(
+            setNotification(`You upvoted ${anecdoteToUpdate.content}`, 3000),
+        );
     };
 
     return (
@@ -47,7 +43,7 @@ const AnecdoteList = () => {
                     <Anecdote
                         key={anecdote.id}
                         anecdote={anecdote}
-                        handleClick={upvoteAnecdote}
+                        handleClick={handleAnecdoteUpvote}
                     />
                 );
             })}
