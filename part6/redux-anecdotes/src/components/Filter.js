@@ -1,12 +1,19 @@
 import React from 'react';
 import { setVisibilityFilter } from '../reducers/filter';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
-const Filter = () => {
-    const dispatch = useDispatch();
+const Filter = (props) => {
+    // Part of Hooks Solution
+
+    // const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        dispatch(setVisibilityFilter(e.target.value));
+        props.setVisibilityFilter(e.target.value);
+
+        // Part of Hooks Solution
+
+        // dispatch(setVisibilityFilter(e.target.value));
     };
 
     const style = {
@@ -21,4 +28,8 @@ const Filter = () => {
     );
 };
 
-export default Filter;
+const mapDispatchToProps = {
+    setVisibilityFilter,
+};
+
+export default connect(null, mapDispatchToProps)(Filter);

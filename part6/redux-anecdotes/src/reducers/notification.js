@@ -1,24 +1,30 @@
-export const setNotification = (message, timespan) => {
-    return async (dispatch) => {
-        await dispatch({
-            type: 'SET_NOTIFICATION',
-            data: message,
-        });
+const showNotification = (message) => {
+    return {
+        type: 'SHOW_NOTIFICATION',
+        data: message,
+    };
+};
 
-        await setTimeout(() => {
-            dispatch({
-                type: 'CLEAR_NOTIFICATION',
-                data: null,
-            });
-        }, timespan);
+const hideNotification = () => {
+    return {
+        type: 'HIDE_NOTIFICATION',
+        data: null,
+    };
+};
+
+export const setNotification = (message, seconds) => {
+    return async (dispatch) => {
+        dispatch(showNotification(message));
+
+        setTimeout(() => dispatch(hideNotification()), seconds * 1000);
     };
 };
 
 const notificationReducer = (state = null, action) => {
     switch (action.type) {
-        case 'SET_NOTIFICATION':
+        case 'SHOW_NOTIFICATION':
             return action.data;
-        case 'CLEAR_NOTIFICATION':
+        case 'HIDE_NOTIFICATION':
             return action.data;
         default:
             return state;

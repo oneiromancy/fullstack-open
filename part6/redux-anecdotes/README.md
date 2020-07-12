@@ -173,3 +173,34 @@ dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
 the first parameter is the text to be rendered and the second parameter is the time to display the notification given in seconds.
 
 Implement the use of this improved notification in your application.
+
+### 6.19 anecdotes and connect, step1
+
+The redux store is currently passed to all of the components through props.
+
+Add the react-redux package to your application, and modify the AnecdoteList so that it accesses the store's state with the help of the connect function.
+
+Voting for and creating new anecdotes does not need to work after this exercise.
+
+The mapStateToProps function you will need in this exercise is approximately the following:
+
+```
+const mapStateToProps = (state) => {
+  // sometimes it is useful to console log from mapStateToProps
+  console.log(state)
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter
+  }
+}
+```
+
+### 6.20 anecdotes and connect, step2
+
+Do the same for the Filter and AnecdoteForm components.
+
+### 6.21 anecdotes, the grand finale
+
+You (probably) have one nasty bug in your application. If the user clicks the vote button multiple times in a row, the notification is displayed funnily. For example if a user votes twice in three seconds, the last notification is only displayed for two seconds (assuming the notification is normally shown for 5 seconds). This happens because removing the first notification accidentally removes the second notification.
+
+Fix the bug so that after multiple votes in a row, the notification for the last vote is displayed for five seconds. This can be done by cancelling the removal of the previous notification when a new notification is displayed whenever necessary. The documentation for the setTimeout function might also be useful for this.
