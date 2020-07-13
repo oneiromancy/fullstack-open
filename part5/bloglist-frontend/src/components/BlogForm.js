@@ -25,6 +25,7 @@ const BlogForm = ({ handleBlogCreation }) => {
                     <input
                         name="title"
                         placeholder="Title"
+                        aria-label="title"
                         onChange={trackInput}
                         value={newBlog.title}
                     />
@@ -33,6 +34,7 @@ const BlogForm = ({ handleBlogCreation }) => {
                     <input
                         name="author"
                         placeholder="Author"
+                        aria-label="author"
                         onChange={trackInput}
                         value={newBlog.author}
                     />
@@ -41,6 +43,7 @@ const BlogForm = ({ handleBlogCreation }) => {
                     <input
                         name="url"
                         placeholder="Url"
+                        aria-label="url"
                         onChange={trackInput}
                         value={newBlog.url}
                     />

@@ -22,7 +22,7 @@ const Button = ({ label, customStyle, handleClick }) => {
 Button.propTypes = {
     label: PropTypes.string.isRequired,
     customStyle: PropTypes.object,
-    handleClick: PropTypes.func.isRequired,
+    handleClick: PropTypes.func,
 };
 
 export default Button;

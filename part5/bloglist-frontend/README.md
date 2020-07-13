@@ -163,3 +163,37 @@ Add ESlint to the project. Define the configuration according to your liking. Fi
 Create-react-app has installed ESlint to the project by default, so all that's left for you to do is to define your desired configuration in the .eslintrc.js file.
 
 NB: do not run the eslint --init command. It will install the latest version of ESlint that is not compatible with the configuration file created by create-react-app!
+
+### 5.13: Blog list tests, step1
+
+Make a test which checks that the component displaying a blog renders the blog's title and author, but does not render its url or number of likes by default
+
+Add CSS-classes to the component to help the testing as necessary.
+
+### 5.14: Blog list tests, step2
+
+Make a test which checks that blog's url and number of likes are shown when the button controlling the shown details has been clicked.
+
+### 5.15: Blog list tests, step3
+
+Make a test which ensures that if the like button is clicked twice, the event handler the component received as props is called twice.
+
+### 5.16\*: Blog list tests, step4
+
+Make a test for the new blog form. The test should check, that the form calls the event handler it received as props with the right details when a new blog is called.
+
+If, for example, you give an input element id 'author':
+
+```
+<input
+  id='author'
+  value={author}
+  onChange={() => {}}
+/>
+```
+
+You can access the contents of the field with
+
+```
+const author = component.container.querySelector('#author')
+```
