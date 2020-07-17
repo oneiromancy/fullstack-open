@@ -32,11 +32,15 @@ const Blog = ({ blog, handleBlogUpdate, handleBlogDeletion }) => {
     };
 
     return (
-        <div style={style.blogContainer}>
+        <div style={style.blogContainer} className="blog-post">
             {!fullViewMode ? (
                 <div style={style.overviewContainer}>
                     <BlogOverview title={blog.title} author={blog.author} />
-                    <Button label="view" handleClick={toggleFullView} />
+                    <Button
+                        label="view"
+                        className="view-blog-button"
+                        handleClick={toggleFullView}
+                    />
                 </div>
             ) : (
                 <div style={style.detailsContainer}>

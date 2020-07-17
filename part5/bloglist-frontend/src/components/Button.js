@@ -8,10 +8,12 @@ const defaultStyle = {
     borderRadius: '0.25rem',
 };
 
-const Button = ({ label, customStyle, handleClick }) => {
+const Button = ({ label, id, className, customStyle, handleClick }) => {
     return (
         <button
             onClick={handleClick}
+            id={id}
+            className={className}
             style={Object.assign({}, { ...defaultStyle }, { ...customStyle })}
         >
             {label}
@@ -21,6 +23,8 @@ const Button = ({ label, customStyle, handleClick }) => {
 
 Button.propTypes = {
     label: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    className: PropTypes.string,
     customStyle: PropTypes.object,
     handleClick: PropTypes.func,
 };

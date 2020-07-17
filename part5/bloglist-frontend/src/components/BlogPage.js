@@ -92,7 +92,7 @@ const BlogPage = ({ user, handleUserState }) => {
             );
         } catch (error) {
             initiateTimedNotification(
-                `${blog.title} by ${blog.author} could not be updated to the database`,
+                `${updatedBlog.title} by ${updatedBlog.author} could not be updated to the database`,
             );
         }
     };

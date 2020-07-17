@@ -197,3 +197,94 @@ You can access the contents of the field with
 ```
 const author = component.container.querySelector('#author')
 ```
+
+### 5.17: bloglist end to end testing, step1
+
+Configure Cypress to your project. Make a test for checking that the application displays the login form by default.
+
+The structure of the test must be as follows
+
+```
+describe('Blog app', function() {
+  beforeEach(function() {
+    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    cy.visit('http://localhost:3000')
+  })
+
+  it('Login form is shown', function() {
+    // ...
+  })
+})
+```
+
+The beforeEach formatting blog must empty the database using for example the method we used in the material.
+
+### 5.18: bloglist end to end testing, step2
+
+Make tests for logging in. Test both successful and unsuccessful log in attempts.
+
+Make a new user in the beforeEach block for the tests.
+
+The test structure extends like so
+
+```
+describe('Blog app', function() {
+  beforeEach(function() {
+    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    // create here a user to backend
+    cy.visit('http://localhost:3000')
+  })
+
+  it('Login form is shown', function() {
+    // ...
+  })
+
+  describe('Login',function() {
+    it('succeeds with correct credentials', function() {
+      // ...
+    })
+
+    it('fails with wrong credentials', function() {
+      // ...
+    })
+  })
+})
+```
+
+Optional bonus exercise: Check that the notification shown with unsuccessful login is displayed red.
+
+### 5.19: bloglist end to end testing, step3
+
+Make a test which checks that a logged in user can create a new blog. The structure of the test could be as follows
+
+```
+describe('Blog app', function() {
+  // ...
+
+  describe.only('When logged in', function() {
+    beforeEach(function() {
+      // log in user here
+    })
+
+    it('A blog can be created', function() {
+      // ...
+    })
+  })
+
+})
+```
+
+The test has to ensure that a new blog is added to the list of all blogs.
+
+### 5.20: bloglist end to end testing, step4
+
+Make a test which checks that user can like a blog.
+
+### 5.21: bloglist end to end testing, step5
+
+Make a test for ensuring that the user who created a blog can delete it.
+
+Optional bonus exercise: also check that other users cannot delete the blog.
+
+###5.22: bloglist end to end testing, step6
+Make a test which checks that the blogs are ordered according to likes with the blog with the most likes being first.

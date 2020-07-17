@@ -31,14 +31,23 @@ const LoginForm = ({ handleUserLogin }) => {
         <form onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">username: </label>
-                <input name="username" onChange={trackInput} />
+                <input name="username" id="username" onChange={trackInput} />
             </div>
             <div>
                 <label htmlFor="password">password: </label>
-                <input name="password" type="password" onChange={trackInput} />
+                <input
+                    name="password"
+                    id="password"
+                    type="password"
+                    onChange={trackInput}
+                />
             </div>
 
-            <Button label="login" customStyle={style.button} />
+            <Button
+                label="login"
+                id="login-button"
+                customStyle={style.button}
+            />
         </form>
     );
 };
