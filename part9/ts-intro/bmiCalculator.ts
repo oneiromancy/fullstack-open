@@ -1,23 +1,23 @@
-interface BodyMeasurements {
-    height: number;
-    weight: number;
-}
+// interface BodyMeasurements {
+//     height: number;
+//     weight: number;
+// }
 
-const parseBodyMeasurements = (args: Array<string>): BodyMeasurements => {
-    if (args.length < 4) throw new Error('Not enough arguments');
-    if (args.length > 4) throw new Error('Too many arguments');
+// const parseBodyMeasurements = (args: Array<string>): BodyMeasurements => {
+//     if (args.length < 4) throw new Error('Not enough arguments');
+//     if (args.length > 4) throw new Error('Too many arguments');
 
-    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-        return {
-            height: Number(args[2]),
-            weight: Number(args[3]),
-        };
-    } else {
-        throw new Error('Provided values were not numbers');
-    }
-};
+//     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+//         return {
+//             height: Number(args[2]),
+//             weight: Number(args[3]),
+//         };
+//     } else {
+//         throw new Error('Provided values were not numbers');
+//     }
+// };
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const bmi: number = weight / Math.pow(height / 100, 2);
     let healthMessage: string;
 
@@ -26,16 +26,16 @@ const calculateBmi = (height: number, weight: number): string => {
     } else if (bmi < 18.5) {
         healthMessage = 'Underweight';
     } else {
-        healthMessage = 'Normal';
+        healthMessage = 'Normal (healthy weight)';
     }
 
     return healthMessage;
 };
 
-try {
-    const { height, weight } = parseBodyMeasurements(process.argv);
+// try {
+//     const { height, weight } = parseBodyMeasurements(process.argv);
 
-    console.log(calculateBmi(height, weight));
-} catch (e) {
-    console.log('Oops, something bad happened...', e.message);
-}
+//     console.log(calculateBmi(height, weight));
+// } catch (e) {
+//     console.log('Oops, something bad happened...', e.message);
+// }

@@ -1,26 +1,26 @@
-interface FitnessRecord {
-    dailyTarget: number;
-    exerciseRecord: Array<number>;
-}
+// interface FitnessRecord {
+//     dailyTarget: number;
+//     exerciseRecord: Array<number>;
+// }
 
-const parseFitnessRecord = (args: Array<string>): FitnessRecord => {
-    if (args.length <= 3) throw new Error('Not enough arguments');
+// const parseFitnessRecord = (args: Array<string>): FitnessRecord => {
+//     if (args.length <= 3) throw new Error('Not enough arguments');
 
-    const dailyTarget = Number(args[2]);
+//     const dailyTarget = Number(args[2]);
 
-    const exerciseRecord = args.slice(3).map((arg) => {
-        if (isNaN(Number(arg))) {
-            throw new Error('Provided values were not numbers');
-        }
+//     const exerciseRecord = args.slice(3).map((arg) => {
+//         if (isNaN(Number(arg))) {
+//             throw new Error('Provided values were not numbers');
+//         }
 
-        return Number(arg);
-    });
+//         return Number(arg);
+//     });
 
-    return {
-        dailyTarget,
-        exerciseRecord,
-    };
-};
+//     return {
+//         dailyTarget,
+//         exerciseRecord,
+//     };
+// };
 
 interface FitnessEvaluation {
     // the number of days
@@ -45,7 +45,7 @@ interface FitnessEvaluation {
     ratingDescription: string;
 }
 
-const evaluateFitnessRecord = (
+export const evaluateFitnessRecord = (
     dailyTarget: number,
     exerciseRecord: Array<number>,
 ): FitnessEvaluation => {
@@ -96,10 +96,10 @@ const evaluateFitnessRecord = (
     };
 };
 
-try {
-    const { dailyTarget, exerciseRecord } = parseFitnessRecord(process.argv);
+// try {
+//     const { dailyTarget, exerciseRecord } = parseFitnessRecord(process.argv);
 
-    console.log(evaluateFitnessRecord(dailyTarget, exerciseRecord));
-} catch (e) {
-    console.log('Oops, something bad happened...', e.message);
-}
+//     console.log(evaluateFitnessRecord(dailyTarget, exerciseRecord));
+// } catch (e) {
+//     console.log('Oops, something bad happened...', e.message);
+// }
