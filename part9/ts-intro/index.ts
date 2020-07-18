@@ -16,16 +16,16 @@ app.get('/bmi', (req, res) => {
         res.status(400).json({ error: 'parameters missing' });
 
     const formattedHeight: number = Number(height),
-        formattedWeights: number = Number(weight);
+        formattedWeight: number = Number(weight);
 
-    if (isNaN(formattedHeight) || isNaN(formattedWeights))
+    if (isNaN(formattedHeight) || isNaN(formattedWeight))
         return res.status(400).json({ error: 'malformatted parameters' });
 
-    const healthMessage = calculateBmi(formattedHeight, formattedWeights);
+    const healthMessage = calculateBmi(formattedHeight, formattedWeight);
 
     return res.json({
         height: formattedHeight,
-        weight: formattedWeights,
+        weight: formattedWeight,
         healthMessage,
     });
 });
