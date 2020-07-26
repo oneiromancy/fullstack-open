@@ -5,15 +5,17 @@ interface Part {
     exerciseCount: number;
 }
 
-interface ContentProps {
-    part: Part;
-}
-
-const Content: React.FC<ContentProps> = ({ part }) => {
+const Content: React.FC<{ parts: Array<Part> }> = ({ parts }) => {
     return (
-        <p>
-            {part.name} {part.exerciseCount}
-        </p>
+        <div>
+            {parts.map((part) => {
+                return (
+                    <p>
+                        {part.name} {part.exerciseCount}
+                    </p>
+                );
+            })}
+        </div>
     );
 };
 

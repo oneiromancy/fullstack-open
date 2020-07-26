@@ -23,11 +23,7 @@ const App: React.FC = () => {
     return (
         <div>
             <Header name={courseName} />
-
-            {courseParts.map((part) => {
-                return <Content part={part} />;
-            })}
-
+            <Content parts={courseParts} />
             <Total parts={courseParts} />
         </div>
     );
