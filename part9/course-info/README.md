@@ -69,3 +69,61 @@ const App = () => {
   )
 };
 ```
+
+### 9.15
+
+First add the type information to index.tsx and replace the variable courseParts with the one from the example below.
+
+```
+// new types
+interface CoursePartBase {
+  name: string;
+  exerciseCount: number;
+}
+
+interface CoursePartOne extends CoursePartBase {
+  name: "Fundamentals";
+  description: string;
+}
+
+interface CoursePartTwo extends CoursePartBase {
+  name: "Using props to pass data";
+  groupProjectCount: number;
+}
+
+interface CoursePartThree extends CoursePartBase {
+  name: "Deeper type usage";
+  description: string;
+  exerciseSubmissionLink: string;
+}
+
+type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree;
+
+// this is the new coursePart variable
+const courseParts: CoursePart[] = [
+  {
+    name: "Fundamentals",
+    exerciseCount: 10,
+    description: "This is an awesome course part"
+  },
+  {
+    name: "Using props to pass data",
+    exerciseCount: 7,
+    groupProjectCount: 3
+  },
+  {
+    name: "Deeper type usage",
+    exerciseCount: 14,
+    description: "Confusing description",
+    exerciseSubmissionLink: "https://fake-exercise-submit.made-up-url.dev"
+  }
+];
+```
+
+Now we know that both interfaces CoursePartOne and CoursePartThree share not only the base attributes, but also an attribute called description, which is a string in both interfaces.
+
+Your first task is to to declare a new interface, that includes the description attribute and extends the CoursePartBase interface. Then modify the code so that you can remove the description attribute from both CoursePartOne and CoursePartThree without getting any errors.
+
+Then create a component Part that renders all attributes of each type of course part. Use a switch case -based exhaustive type checking! Use the new component in component Content.
+
+Lastly, add your own course part interface with at least the following attributes: name, exerciseCount and description. Then add that interface to the type union CoursePart and add corresponding data to the courseParts variable. Now if you have modified your Content component correctly, you should get an error, because you have not yet added support for the fourth course part type. Do the necessary changes to Content, so that all attributes for the new course part also get rendered and that the compiler doesn't produce any errors.
