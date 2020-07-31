@@ -25,13 +25,13 @@ blogRouter.post('/', async (req, res) => {
 
     const user = await User.findById(decodedToken.id);
 
-    const blog = new Blog({ title, author, url, likes, user: user._id });
+    const blog = new Blog({ title, author, url, likes, user });
     const savedBlog = await blog.save();
 
     user.blogs = user.blogs.concat(savedBlog._id);
     await user.save();
 
-    return res.status(201).json(blog.toJSON());
+    return res.status(201).json(savedBlog.toJSON());
 });
 
 blogRouter.get('/:id', async (req, res) => {
@@ -63,7 +63,7 @@ blogRouter.delete('/:id', async (req, res) => {
         return res.status(400).json({ error: 'unauthorized action' });
     }
 
-    const deletedBlog = await Blog.findByIdAndRemove(id);
+    await Blog.findByIdAndRemove(id);
 
     return res.status(204).end();
 });
@@ -76,6 +76,19 @@ blogRouter.put('/:id', async (req, res) => {
     const blog = await Blog.findByIdAndUpdate(id, updatedValues, {
         new: true,
     });
+
+    return res.json(blog.toJSON());
+});
+
+blogRouter.post('/:id/comments', async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+
+    const blog = await Blog.findByIdAndUpdate(
+        id,
+        { $push: { comments: { text: comment } } },
+        { safe: true, upsert: true, new: true },
+    );
 
     return res.json(blog.toJSON());
 });

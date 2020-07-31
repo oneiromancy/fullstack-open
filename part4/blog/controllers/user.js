@@ -27,4 +27,12 @@ userRouter.post('/', async (req, res) => {
     return res.status(201).json(savedUser.toJSON());
 });
 
+userRouter.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const user = await User.findById(id).populate('blogs');
+
+    return res.json(user.toJSON());
+});
+
 module.exports = userRouter;
