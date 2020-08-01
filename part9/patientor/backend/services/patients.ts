@@ -1,30 +1,49 @@
 import patients from '../data/patients.json';
-import { INonSensitivePatient, INewPatientEntry } from '../types/patients';
+import {
+    IPublicPatient,
+    IPatient,
+    INewPatient,
+    Entry,
+    Gender,
+} from '../types/patients';
 import { v4 as uuidv4 } from 'uuid';
 
-const getAll = (): Array<INonSensitivePatient> => {
-    return patients.map(({ id, name, dateOfBirth, gender, occupation }) => {
-        return {
+let savedPatients: IPatient[] = [...patients].map((patient) => {
+    return {
+        ...patient,
+        gender: patient.gender as Gender,
+        entries: patient.entries as Entry[],
+    };
+});
+
+const getAll = (): IPublicPatient[] => {
+    return savedPatients.map(
+        ({ id, name, dateOfBirth, gender, occupation }) => ({
             id,
             name,
             dateOfBirth,
             gender,
             occupation,
-        };
-    });
+        }),
+    );
 };
 
-const createOne = (entry: INewPatientEntry): INonSensitivePatient => {
+const getById = (id: string): IPatient | undefined => {
+    return savedPatients.find((patient) => patient.id === id);
+};
+
+const createOne = (patient: INewPatient): IPublicPatient => {
     const newPatient = {
+        ...patient,
         id: uuidv4(),
-        ...entry,
+        entries: [] as Entry[],
     };
 
-    patients.push(newPatient);
+    savedPatients = savedPatients.concat(newPatient);
 
-    const { ssn, ...reprPatient } = newPatient;
+    const { ssn, entries, ...publicPatient } = newPatient;
 
-    return reprPatient;
+    return publicPatient;
 };
 
-export default { getAll, createOne };
+export default { getAll, getById, createOne };

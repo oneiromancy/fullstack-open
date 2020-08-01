@@ -1,3 +1,5 @@
+export interface Entry {}
+
 export enum Gender {
     Male = 'male',
     Female = 'female',
@@ -9,10 +11,11 @@ export interface IPatient {
     name: string;
     dateOfBirth: string;
     ssn: string;
-    gender: string;
+    gender: Gender;
     occupation: string;
+    entries: Entry[];
 }
 
-export type INonSensitivePatient = Omit<IPatient, 'ssn'>;
+export type IPublicPatient = Omit<IPatient, 'ssn' | 'entries'>;
 
-export type INewPatientEntry = Omit<IPatient, 'id'>;
+export type INewPatient = Omit<IPatient, 'id' | 'entries'>;

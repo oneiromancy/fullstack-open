@@ -1,4 +1,4 @@
-import { INewPatientEntry, Gender } from '../types/patients';
+import { INewPatient, Gender } from '../types/patients';
 
 const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
@@ -19,7 +19,7 @@ const parseDOB = (dateOfBirth: string): string => {
     return dateOfBirth;
 };
 
-const parseGender = (gender: Gender): Gender => {
+export const parseGender = (gender: Gender): Gender => {
     if (!gender || !isGender(gender))
         throw new Error(`Incorrect or missing gender (${gender})`);
 
@@ -47,14 +47,12 @@ const parseSSN = (ssn: string): string => {
     return ssn;
 };
 
-export const toNewPatientEntry = (object: any): INewPatientEntry => {
-    const newPatient = {
+export const toNewPatient = (object: any): INewPatient => {
+    return {
         name: parseName(object.name),
         gender: parseGender(object.gender),
         dateOfBirth: parseDOB(object.dateOfBirth),
         occupation: parseOccupation(object.occupation),
         ssn: parseSSN(object.ssn),
     };
-
-    return newPatient;
 };

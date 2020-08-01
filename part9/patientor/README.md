@@ -39,3 +39,67 @@ Create a POST-endpoint /api/patients for adding patients. Ensure that you can ad
 Set up safe parsing, validation and type guards to the POST /api/patients request.
 
 Refactor the Gender field to use an enum type.
+
+### 9.16: patientor, step1
+
+Create an endpoint /api/patients/:id that returns all of the patient information for one patient, including the array of patient entries that is still empty for all the patients. For the time being, expand the backend types as follows:
+
+```
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Entry {
+}
+
+export interface Patient {
+  id: string;
+  name: string;
+  ssn: string;
+  occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+  entries: Entry[]
+}
+
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries' >
+```
+
+### 9.17: patientor, step2
+
+Create a page for showing a patient's full information in the frontend.
+
+User should be able to access a patient's information e.g by clicking the patient's name.
+
+Fetch the data from the enpoint created in the previous exercise. After fetching the patient information from the backend, add the fetched information to the application's state. Do not fetch the information if it already is in the app state, i.e. if the user is visiting the same patient's information many times.
+
+Since we now have the state in the context, you'll need to define a new action type for updating an individual patient's data.
+
+The Application uses Semantic UI React for styling, which is quite similar to React Bootstrap and MaterialUI that we covered in part 7. You may also use it for the new components but that is up to you since our main focus now is Typescript.
+
+The Application also uses react router to control which view is visible in the frontend. You might want to have a look at part 7 if you don't yet have a grasp on how the router works.
+
+Note that in order to access the id in the url, you need to give useParams a proper type argument:
+
+```
+const { id } = useParams<{ id: string }>();
+```
+
+### 9.18: patientor, step3
+
+Currently we create the action objects wherever we dispatch the actions, e.g. component App has the following:
+
+```
+dispatch({
+  type: "SET_PATIENT_LIST", payload: patientListFromApi
+});
+```
+
+Refactor the code to use action creator functions that are all defined in the file reducer.tsx.
+
+For example the App changes like this
+
+```
+import { useStateValue, setPatientList } from "./state";
+
+// ...
+
+dispatch(setPatientList(patientListFromApi));
+```
