@@ -10,9 +10,13 @@ const router = express_1.default.Router();
 router.get('/', (_req, res) => {
     return res.json(patients_1.default.getAll());
 });
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+    return res.json(patients_1.default.getById(id));
+});
 router.post('/', (req, res) => {
     try {
-        const newPatient = patients_2.toNewPatientEntry(req.body);
+        const newPatient = patients_2.toNewPatient(req.body);
         return res.json(patients_1.default.createOne(newPatient));
     }
     catch (e) {

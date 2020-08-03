@@ -103,3 +103,27 @@ import { useStateValue, setPatientList } from "./state";
 
 dispatch(setPatientList(patientListFromApi));
 ```
+
+### 9.19: patientor, step4
+
+Define the types OccupationalHealthCareEntry and HospitalEntry so that those conform with the example data. Ensure that your backend returns the entries properly when you go to a individual patient's route
+
+Use types properly in the backend! For now there is no need to do a proper validation for all the fields of the entries in the backend, it is enough e.g. to check that the field type has a correct value.
+
+### 9.20: patientor, step5
+
+Extend a patient's page in the frontend to list the date, description and diagnose codes of the patient's entries.
+
+You can use the same type definition for an Entry in the frontend. For these exercises it is enough just to copy/paste the definitions from the backend to the frontend.
+
+### 9.21: patientor, step6
+
+Fetch and add diagnoses to application state from /api/diagnosis endpoint. Use the new diagnosis data to show the descriptions for patient's diagnosis codes:
+
+### 9.22: patientor, step7
+
+Extend the entry-listing in the patient page to include the Entry's details with a new component that shows rest of the information of the patients entries distinguishing different types from each other.
+
+You could use eg. Icon or some other SemanticUI component the get appropriate visuals for your listing.
+
+You should use a switch case based rendering and exhaustive type checking so that no cases can be forgotten.

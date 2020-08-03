@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import { useStateValue, setSinglePatient } from '../state';
+import { useStateValue, setSinglePatient, setDiagnosesList } from '../state';
 import { apiBaseUrl } from '../constants';
 import { useParams } from 'react-router-dom';
-import { Patient } from '../types';
-import { Card, Icon } from 'semantic-ui-react';
+import { Patient as IPatient, Diagnosis as IDiagnosis } from '../types';
+import { Header, Divider, Container } from 'semantic-ui-react';
+import Patient from './Patient';
+import Entries from './Entries';
 
 const PatientPage: React.FC = () => {
     const [{ patients }, dispatch] = useStateValue();
@@ -13,7 +15,7 @@ const PatientPage: React.FC = () => {
     React.useEffect(() => {
         const fetchPatientById = async () => {
             try {
-                const { data: patientFromApi } = await axios.get<Patient>(
+                const { data: patientFromApi } = await axios.get<IPatient>(
                     `${apiBaseUrl}/patients/${id}`,
                 );
                 dispatch(setSinglePatient(patientFromApi));
@@ -26,30 +28,34 @@ const PatientPage: React.FC = () => {
         // eslint-disable-next-line
     }, [dispatch]);
 
-    const genderOptions = {
-        female: 'venus' as 'venus',
-        male: 'mars' as 'mars',
-        other: 'genderless' as 'genderless',
-    };
+    React.useEffect(() => {
+        const fetchDiagnosesList = async () => {
+            try {
+                const { data: diagnosesFromApi } = await axios.get<
+                    IDiagnosis[]
+                >(`${apiBaseUrl}/diagnoses`);
+                dispatch(setDiagnosesList(diagnosesFromApi));
+            } catch (e) {
+                console.log(e);
+            }
+        };
 
-    let patient: Patient = patients[id];
+        fetchDiagnosesList();
+        // eslint-disable-next-line
+    }, [dispatch]);
+
+    const patient = patients[id];
 
     return (
         <>
             {patient && (
-                <Card>
-                    <Card.Content>
-                        <Card.Header>
-                            {patient.name}{' '}
-                            <Icon name={genderOptions[patient.gender]} />
-                        </Card.Header>
-                        <Card.Meta>DOB: {patient.dateOfBirth}</Card.Meta>
-                        <Card.Description>
-                            Occupation: {patient.occupation}
-                        </Card.Description>
-                        <Card.Description>SSN: {patient.ssn}</Card.Description>
-                    </Card.Content>
-                </Card>
+                <Container>
+                    <Header as="h2">Health Record</Header>
+                    <Divider hidden />
+                    <Patient patient={patient} />
+                    <Divider hidden />
+                    <Entries entries={patient.entries} />
+                </Container>
             )}
         </>
     );

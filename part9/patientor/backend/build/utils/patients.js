@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toNewPatientEntry = void 0;
+exports.toNewPatient = exports.parseGender = void 0;
 const patients_1 = require("../types/patients");
 const isGender = (param) => {
     return Object.values(patients_1.Gender).includes(param);
@@ -16,7 +16,7 @@ const parseDOB = (dateOfBirth) => {
         throw new Error(`Incorrect or missing date of birth (${dateOfBirth})`);
     return dateOfBirth;
 };
-const parseGender = (gender) => {
+exports.parseGender = (gender) => {
     if (!gender || !isGender(gender))
         throw new Error(`Incorrect or missing gender (${gender})`);
     return gender;
@@ -36,13 +36,12 @@ const parseSSN = (ssn) => {
         throw new Error(`Incorrect or missing occupation (${ssn})`);
     return ssn;
 };
-exports.toNewPatientEntry = (object) => {
-    const newPatient = {
+exports.toNewPatient = (object) => {
+    return {
         name: parseName(object.name),
-        gender: parseGender(object.gender),
+        gender: exports.parseGender(object.gender),
         dateOfBirth: parseDOB(object.dateOfBirth),
         occupation: parseOccupation(object.occupation),
         ssn: parseSSN(object.ssn),
     };
-    return newPatient;
 };

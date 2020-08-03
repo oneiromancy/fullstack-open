@@ -14,23 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const patients_json_1 = __importDefault(require("../data/patients.json"));
+const patients_1 = __importDefault(require("../data/patients"));
 const uuid_1 = require("uuid");
+let savedPatients = [...patients_1.default];
+console.log(savedPatients);
 const getAll = () => {
-    return patients_json_1.default.map(({ id, name, dateOfBirth, gender, occupation }) => {
-        return {
-            id,
-            name,
-            dateOfBirth,
-            gender,
-            occupation,
-        };
-    });
+    return savedPatients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+        id,
+        name,
+        dateOfBirth,
+        gender,
+        occupation,
+    }));
 };
-const createOne = (entry) => {
-    const newPatient = Object.assign({ id: uuid_1.v4() }, entry);
-    patients_json_1.default.push(newPatient);
-    const { ssn } = newPatient, reprPatient = __rest(newPatient, ["ssn"]);
-    return reprPatient;
+const getById = (id) => {
+    console.log();
+    return savedPatients.find((patient) => patient.id === id);
 };
-exports.default = { getAll, createOne };
+const createOne = (patient) => {
+    const newPatient = Object.assign(Object.assign({}, patient), { id: uuid_1.v4(), entries: [] });
+    savedPatients = savedPatients.concat(newPatient);
+    const { ssn, entries } = newPatient, publicPatient = __rest(newPatient, ["ssn", "entries"]);
+    return publicPatient;
+};
+exports.default = { getAll, getById, createOne };
