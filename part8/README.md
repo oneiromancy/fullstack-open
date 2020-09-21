@@ -312,3 +312,15 @@ The second parameter of a useEffect - hook can become handy depending on your ap
 If you fetch the book recommendations with GraphQL, ensure somehow that the books view is kept up to date. So when a new book is added, the books view is updated at least when a genre selection button is pressed.
 
 When new genre selection is not done, the view does not have to be updated.
+
+## 8.23: Subscriptions - server
+
+Do a backend implementation for subscription bookAdded, which returns the details of all new books to its subscribers.
+
+## 8.24: Subscriptions - client, part 1
+
+Start using subscriptions in the client, and subscribe to bookAdded. When new books are added, notify the user. Any method works. For example, you can use the window.alert function.
+
+## 8.25: Subscriptions - client, part 2
+
+Keep the application's view updated when the server notifies about new books. You can test your implementation by opening the app in two browser tabs and adding a new book in one tab. Adding the new book should update the view in both tabs.

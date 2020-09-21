@@ -6,8 +6,6 @@ const Recommended = (props) => {
     const bookResult = useQuery(ALL_BOOKS);
     const meResult = useQuery(ME);
 
-    console.log(meResult.data);
-
     const filterFavoriteGenre = () => {
         return bookResult.data.allBooks.filter((book) => {
             return book.genres.includes(meResult.data.me.favoriteGenre);

@@ -2,36 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { ALL_BOOKS } from '../queries';
 import { useLazyQuery } from '@apollo/client';
 
-const Books = (props) => {
-    const [genreFilter, setGenreFilter] = useState(null);
-    const [getAllBooks, { loading, data }] = useLazyQuery(ALL_BOOKS, {
-        variables: { genre: genreFilter },
-    });
+const Books = ({ show, allBooksQuery }) => {
+    const [books, setBooks] = useState(null);
+    const [getBooks, result] = useLazyQuery(ALL_BOOKS);
 
     useEffect(() => {
-        getAllBooks();
-    }, []);
+        if (result.data) {
+            setBooks(result.data.allBooks);
+        }
+    }, [result.data]);
 
-    if (!props.show) {
+    if (!show) {
         return null;
     }
 
-    if (loading) {
+    if (result.loading) {
         return <div>Loading...</div>;
     }
 
-    const updateFilter = (event) => {
-        if (event.target.innerText === 'all genres') {
-            setGenreFilter(null);
-        } else {
-            setGenreFilter(event.target.innerText);
-        }
+    const updateGenreFilter = (e) => {
+        const genreFilter =
+            e.target.innerText === 'all genres' ? null : e.target.innerText;
+
+        getBooks({ variables: { genre: genreFilter } });
     };
 
-    return (
-        <div>
-            <h2>books</h2>
-
+    const renderBooks = (books) => {
+        return (
             <table>
                 <tbody>
                     <tr>
@@ -39,25 +36,38 @@ const Books = (props) => {
                         <th>author</th>
                         <th>published</th>
                     </tr>
-                    {data &&
-                        data.allBooks.map((a) => (
-                            <tr key={a.title}>
-                                <td>{a.title}</td>
-                                <td>{a.author.name}</td>
-                                <td>{a.published}</td>
-                            </tr>
-                        ))}
+                    {books.map((book) => (
+                        <tr key={book.title}>
+                            <td>{book.title}</td>
+                            <td>{book.author.name}</td>
+                            <td>{book.published}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
+        );
+    };
+
+    return (
+        <div>
+            <h2>books</h2>
+
+            {books
+                ? renderBooks(books)
+                : renderBooks(allBooksQuery.data.allBooks)}
 
             <div>
-                <button onClick={(e) => updateFilter(e)}>refactoring</button>
-                <button onClick={(e) => updateFilter(e)}>agile</button>
-                <button onClick={(e) => updateFilter(e)}>patterns</button>
-                <button onClick={(e) => updateFilter(e)}>design</button>
-                <button onClick={(e) => updateFilter(e)}>crime</button>
-                <button onClick={(e) => updateFilter(e)}>classic</button>
-                <button onClick={(e) => updateFilter(e)}>all genres</button>
+                <button onClick={(e) => updateGenreFilter(e)}>
+                    refactoring
+                </button>
+                <button onClick={(e) => updateGenreFilter(e)}>agile</button>
+                <button onClick={(e) => updateGenreFilter(e)}>patterns</button>
+                <button onClick={(e) => updateGenreFilter(e)}>design</button>
+                <button onClick={(e) => updateGenreFilter(e)}>crime</button>
+                <button onClick={(e) => updateGenreFilter(e)}>classic</button>
+                <button onClick={(e) => updateGenreFilter(e)}>
+                    all genres
+                </button>
             </div>
         </div>
     );
